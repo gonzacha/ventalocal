@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VentaLocal × Litoralia Store — POS + Ecommerce + Fiscal</title>
+  <meta name="description" content="Caso real: Litoralia Store — una pyme con local físico y tienda online, operando con VentaLocal: POS móvil, ecommerce instantáneo y facturación fiscal simulada." />
+  <link rel="icon" href="data:," />
+  <meta property="og:title" content="VentaLocal × Litoralia Store" />
+  <meta property="og:description" content="POS, ecommerce y CRM integrados en un solo sistema." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://litoralia.store/" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .glass{backdrop-filter:saturate(140%) blur(8px);background:rgba(255,255,255,.7)}
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-sky-50 to-white text-slate-800">
+  <!-- Header / Nav -->
+  <header class="sticky top-0 z-50 glass border-b border-slate-200">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <a href="#" class="flex items-center gap-2 font-semibold">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sky-600"><path d="M3 3h7v7H3z"/><path d="M14 3h7v7h-7z"/><path d="M14 14h7v7h-7z"/><path d="M3 14h7v7H3z"/></svg>
+        <span>VentaLocal <span class="text-slate-400">×</span> Litoralia</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href="#caso" class="hover:text-sky-700">Caso real</a>
+        <a href="#funcionalidades" class="hover:text-sky-700">Funcionalidades</a>
+        <a href="#demo" class="hover:text-sky-700">Demo</a>
+        <a href="#contacto" class="hover:text-sky-700">Contacto</a>
+      </nav>
+      <div class="flex items-center gap-2">
+        <a href="/store" class="hidden sm:inline-block rounded-xl bg-slate-900 text-white px-4 py-2 text-sm hover:bg-slate-700">Ver tienda</a>
+        <a href="/pos" class="rounded-xl bg-sky-600 text-white px-4 py-2 text-sm hover:bg-sky-700">Abrir POS</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative isolate">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24 grid lg:grid-cols-2 items-center gap-12">
+      <div>
+        <h1 class="text-3xl sm:text-5xl font-bold leading-tight tracking-tight">
+          Tu comercio físico y online<br class="hidden sm:block"/>
+          en <span class="text-sky-600">un solo sistema</span>
+        </h1>
+        <p class="mt-4 text-lg text-slate-600">Caso real: <strong>Litoralia Store</strong> — vende mates, termos, bebidas y tabaquería. Con <strong>VentaLocal</strong> opera el punto de venta (POS), factura, cobra con QR y vende online con carrito. Todo integrado al CRM.</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="/app" class="rounded-xl bg-sky-600 text-white px-5 py-3 hover:bg-sky-700">Probar App</a>
+          <a href="/store" class="rounded-xl border border-slate-300 px-5 py-3 hover:bg-slate-100">Ver Ecommerce</a>
+          <a href="/pos" class="rounded-xl border border-slate-300 px-5 py-3 hover:bg-slate-100">Abrir POS</a>
+        </div>
+        <div class="mt-6 flex items-center gap-4 text-sm text-slate-500">
+          <div class="flex items-center gap-2"><span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span> HTTPS listo para cámara (QR)</div>
+          <div class="hidden sm:block">•</div>
+          <div>Sin backend para la demo</div>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="rounded-2xl shadow-2xl ring-1 ring-slate-200 overflow-hidden bg-white">
+          <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+            <span class="text-sm font-medium">Litoralia — POS</span>
+            <a href="/pos" class="text-xs text-sky-600 hover:underline">Abrir</a>
+          </div>
+          <div class="p-4 grid gap-3 sm:grid-cols-2">
+            <div class="rounded-xl border border-slate-200 p-4">
+              <p class="text-xs text-slate-500">Ticket fiscal (simulado)</p>
+              <h3 class="font-semibold mt-1">Compra: Mate + Gaseosa</h3>
+              <ul class="mt-2 text-sm list-disc pl-5 text-slate-600">
+                <li>POS móvil + QR</li>
+                <li>Datos de cliente → CRM</li>
+                <li>Pago con MP (sandbox)</li>
+              </ul>
+            </div>
+            <div class="rounded-xl border border-slate-200 p-4">
+              <p class="text-xs text-slate-500">Ecommerce</p>
+              <h3 class="font-semibold mt-1">Litoralia Store</h3>
+              <ul class="mt-2 text-sm list-disc pl-5 text-slate-600">
+                <li>Catálogo de mates y termos</li>
+                <li>Carrito + checkout</li>
+                <li>Inventario simple</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Caso real -->
+  <section id="caso" class="py-16 sm:py-20 bg-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-semibold">Caso real: Litoralia Store</h2>
+        <p class="mt-3 text-slate-600">Kiosco + tabaquería en Corrientes que además vende online productos de mate y accesorios. Con VentaLocal, Litoralia unificó su operación: punto de venta físico, ecommerce y clientes en un CRM simple.</p>
+        <ul class="mt-5 grid sm:grid-cols-2 gap-3 text-sm">
+          <li class="flex items-start gap-3"><span class="mt-1 inline-block w-2 h-2 rounded-full bg-sky-600"></span> POS móvil con cámara (QR/barcode)</li>
+          <li class="flex items-start gap-3"><span class="mt-1 inline-block w-2 h-2 rounded-full bg-sky-600"></span> Facturación fiscal simulada</li>
+          <li class="flex items-start gap-3"><span class="mt-1 inline-block w-2 h-2 rounded-full bg-sky-600"></span> Ecommerce listo en minutos</li>
+          <li class="flex items-start gap-3"><span class="mt-1 inline-block w-2 h-2 rounded-full bg-sky-600"></span> CRM: clientes y tickets</li>
+        </ul>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="/store" class="rounded-xl bg-slate-900 text-white px-5 py-3 hover:bg-slate-700">Ver tienda</a>
+          <a href="/pos" class="rounded-xl border border-slate-300 px-5 py-3 hover:bg-slate-100">Abrir POS</a>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-slate-200 p-6 bg-slate-50">
+        <h3 class="font-semibold">Flujo de venta</h3>
+        <ol class="mt-3 list-decimal pl-5 text-slate-600 space-y-2">
+          <li>El cliente compra en el local — mate + gaseosa.</li>
+          <li>El vendedor carga la venta en el POS y genera ticket.</li>
+          <li>Se envía link/QR de pago (MP sandbox) y se confirma.</li>
+          <li>Los datos del cliente quedan en el CRM para próximos pedidos.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Funcionalidades -->
+  <section id="funcionalidades" class="py-16 sm:py-20 bg-slate-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl sm:text-3xl font-semibold">Todo lo que necesitás, junto</h2>
+      <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="rounded-2xl bg-white border border-slate-200 p-6">
+          <h3 class="font-semibold">POS móvil</h3>
+          <p class="mt-2 text-sm text-slate-600">Cobra con QR, escaneá códigos, trabaja desde el teléfono.</p>
+        </div>
+        <div class="rounded-2xl bg-white border border-slate-200 p-6">
+          <h3 class="font-semibold">Ecommerce instantáneo</h3>
+          <p class="mt-2 text-sm text-slate-600">Catálogo, carrito y checkout listos en minutos.</p>
+        </div>
+        <div class="rounded-2xl bg-white border border-slate-200 p-6">
+          <h3 class="font-semibold">Fiscal (simulado)</h3>
+          <p class="mt-2 text-sm text-slate-600">Emisión de comprobantes demo y control básico de IVA.</p>
+        </div>
+        <div class="rounded-2xl bg-white border border-slate-200 p-6">
+          <h3 class="font-semibold">CRM integrado</h3>
+          <p class="mt-2 text-sm text-slate-600">Cada cliente y ticket quedan guardados para campañas.</p>
+        </div>
+        <div class="rounded-2xl bg-white border border-slate-200 p-6">
+          <h3 class="font-semibold">Analytics simple</h3>
+          <p class="mt-2 text-sm text-slate-600">Ventas por día, ticket promedio y top productos.</p>
+        </div>
+        <div class="rounded-2xl bg-white border border-slate-200 p-6">
+          <h3 class="font-semibold">Modo offline (demo)</h3>
+          <p class="mt-2 text-sm text-slate-600">Funciona aún con conexión inestable (localStorage/PWA).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo links -->
+  <section id="demo" class="py-16 sm:py-20 bg-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="rounded-2xl border border-slate-200 p-6 sm:p-8 bg-gradient-to-br from-white to-slate-50">
+        <h2 class="text-2xl sm:text-3xl font-semibold">Probar la demo</h2>
+        <p class="mt-2 text-slate-600">Explorá los módulos principales en producción.</p>
+        <div class="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <a href="/app" class="rounded-xl border p-4 hover:bg-slate-50">
+            <h3 class="font-semibold">App completa</h3>
+            <p class="text-sm text-slate-600">/app → ventalocal-web-complete.html</p>
+          </a>
+          <a href="/pos" class="rounded-xl border p-4 hover:bg-slate-50">
+            <h3 class="font-semibold">POS</h3>
+            <p class="text-sm text-slate-600">/pos → ventalocal-mobile.html</p>
+          </a>
+          <a href="/store" class="rounded-xl border p-4 hover:bg-slate-50">
+            <h3 class="font-semibold">Tienda</h3>
+            <p class="text-sm text-slate-600">/store → litoralia-store.html</p>
+          </a>
+          <a href="/demo" class="rounded-xl border p-4 hover:bg-slate-50">
+            <h3 class="font-semibold">Demo fiscal</h3>
+            <p class="text-sm text-slate-600">/demo → demo-fiscal.html</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto / CTA -->
+  <section id="contacto" class="py-16 sm:py-20 bg-slate-900 text-slate-100">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-semibold">¿Querés ser la próxima pyme en vender como Litoralia?</h2>
+        <p class="mt-3 text-slate-300">Te ayudamos a activar POS + ecommerce + CRM con un costo mensual simple. Ideal para kioscos, almacenes, farmacias y tiendas de barrio.</p>
+      </div>
+      <form class="bg-slate-800/60 border border-slate-700 rounded-2xl p-6 grid gap-4" action="https://formspree.io/f/xbldzknq" method="POST">
+        <input class="rounded-xl bg-slate-800 border border-slate-700 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-500" type="text" name="name" placeholder="Nombre y comercio" required />
+        <input class="rounded-xl bg-slate-800 border border-slate-700 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-500" type="email" name="email" placeholder="Email" required />
+        <input class="rounded-xl bg-slate-800 border border-slate-700 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-500" type="tel" name="phone" placeholder="WhatsApp (opcional)" />
+        <textarea class="rounded-xl bg-slate-800 border border-slate-700 px-4 py-3 outline-none focus:ring-2 focus:ring-sky-500" name="message" rows="3" placeholder="Contanos qué vendés"></textarea>
+        <button class="rounded-xl bg-sky-600 hover:bg-sky-700 px-5 py-3 font-medium" type="submit">Quiero vender con VentaLocal</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="py-10 text-center text-sm text-slate-500">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p>© <span id="y"></span> VentaLocal · Caso real: Litoralia Store</p>
+      <p class="mt-1"><a href="/app" class="hover:underline">App</a> · <a href="/pos" class="hover:underline">POS</a> · <a href="/store" class="hover:underline">Tienda</a> · <a href="/demo" class="hover:underline">Demo fiscal</a></p>
+    </div>
+  </footer>
+
+  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+</body>
+</html>
