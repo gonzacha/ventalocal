@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧉 LitoraliaStore - ¡EL MATE QUE NECESITAS! 🔥</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(45deg, #2E8B57, #228B22, #32CD32, #7CFC00, #ADFF2F, #9AFF9A);
+            background-size: 400% 400%;
+            animation: naturalGradient 4s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes naturalGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 420px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.98);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            border: 3px solid #228B22;
+        }
+
+        .floating-mate {
+            position: fixed;
+            font-size: 35px;
+            z-index: 1000;
+            pointer-events: none;
+            animation: floatMate 8s linear infinite;
+        }
+
+        @keyframes floatMate {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #228B22 0%, #2E8B57 50%, #228B22 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: mateShine 3s infinite;
+        }
+
+        @keyframes mateShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .header h1 {
+            font-size: 2.1em;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+            animation: mateBounce 2s ease infinite alternate;
+        }
+
+        @keyframes mateBounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-8px); }
+        }
+
+        .mate-text {
+            background: linear-gradient(45deg, #7CFC00, #32CD32, #ADFF2F);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .promo-banner {
+            background: linear-gradient(45deg, #FF4500, #FF6347);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1em;
+            animation: promoPulse 1.5s ease infinite;
+        }
+
+        @keyframes promoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .stats-bar {
+            background: linear-gradient(135deg, #32CD32, #228B22);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .products-grid {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .product-card {
+            background: linear-gradient(135deg, #F0FFF0, #E6FFE6);
+            border: 3px solid #32CD32;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            transform: scale(1);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 8px 25px rgba(50, 205, 50, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05) rotate(1deg);
+            box-shadow: 0 15px 40px rgba(50, 205, 50, 0.4);
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(50, 205, 50, 0.1), transparent);
+            transform: translateX(-100%);
+            animation: productShine 3s infinite;
+        }
+
+        @keyframes productShine {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .product-emoji {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+            animation: productFloat 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes productFloat {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-5px); }
+        }
+
+        .product-name {
+            font-size: 1.2em;
+            font-weight: 900;
+            color: #2E8B57;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .product-price {
+            font-size: 1.8em;
+            font-weight: 900;
+            color: #FF4500;
+            margin: 15px 0;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.8em;
+            margin-right: 10px;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, #FF4500, #FF6347);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            animation: badgePulse 1s ease infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .buy-btn {
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 900;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(50, 205, 50, 0.4);
+        }
+
+        .cart-section {
+            background: linear-gradient(135deg, #FFE4B5, #FFEAA7);
+            border: 3px dashed #FF8C00;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .cart-section::before {
+            content: '🛒';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2em;
+            animation: cartBounce 1.5s ease infinite;
+        }
+
+        @keyframes cartBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(1.1); }
+        }
+
+        .cart-title {
+            font-size: 1.4em;
+            font-weight: 900;
+            color: #B8860B;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .cart-items {
+            margin: 15px 0;
+            min-height: 40px;
+        }
+
+        .cart-item {
+            background: rgba(255,255,255,0.7);
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .cart-total {
+            font-size: 1.5em;
+            font-weight: 900;
+            color: #FF4500;
+            margin: 15px 0;
+        }
+
+        .checkout-btn {
+            background: linear-gradient(45deg, #FF4500, #FF6347, #FF4500);
+            background-size: 200% 200%;
+            color: white;
+            border: none;
+            padding: 18px 25px;
+            border-radius: 25px;
+            font-size: 1.3em;
+            font-weight: 900;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: checkoutGlow 2s ease infinite;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes checkoutGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(255, 69, 0, 0.5);
+        }
+
+        .checkout-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .ventalocal-integration {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ventalocal-integration::before {
+            content: '⚡';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2em;
+            animation: lightningBolt 1s ease infinite alternate;
+        }
+
+        @keyframes lightningBolt {
+            from { transform: scale(1) rotate(0deg); }
+            to { transform: scale(1.2) rotate(5deg); }
+        }
+
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .success-content {
+            background: linear-gradient(135deg, #32CD32, #228B22);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 350px;
+            animation: successBounce 0.5s ease;
+        }
+
+        @keyframes successBounce {
+            from { opacity: 0; transform: scale(0.7); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #2E8B57, #228B22);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .empty-cart {
+            color: #999;
+            font-style: italic;
+            padding: 20px 0;
+        }
+
+        /* Chatbot Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10001;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .chatbot-button {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(50, 205, 50, 0.4);
+            animation: chatbotPulse 2s infinite;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(50, 205, 50, 0.6);
+        }
+
+        @keyframes chatbotPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 320px;
+            height: 450px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            border: 3px solid #32CD32;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: chatbotSlideIn 0.3s ease;
+        }
+
+        @keyframes chatbotSlideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .chatbot-header {
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .chatbot-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: linear-gradient(135deg, #F0FFF0, #E6FFE6);
+        }
+
+        .chatbot-message {
+            margin-bottom: 15px;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bot-message {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 15px 15px 15px 5px;
+            border-left: 3px solid #32CD32;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .user-message {
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 15px 15px 5px 15px;
+            margin-left: 50px;
+            box-shadow: 0 2px 8px rgba(50, 205, 50, 0.3);
+        }
+
+        .chatbot-input-area {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #32CD32;
+            border-radius: 25px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chatbot-send {
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+
+        .chatbot-send:hover {
+            transform: scale(1.1);
+        }
+
+        .product-suggestion {
+            background: rgba(50, 205, 50, 0.1);
+            border: 1px solid #32CD32;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-suggestion:hover {
+            background: rgba(50, 205, 50, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .quick-action {
+            background: linear-gradient(45deg, #7CFC00, #32CD32);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .quick-action:hover {
+            transform: scale(1.05);
+        }
+
+        .chatbot-notification {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #FF4500;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: notificationBounce 1s ease infinite;
+        }
+
+        @keyframes notificationBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+                max-width: none;
+            }
+
+            .chatbot-window {
+                width: 280px;
+                height: 400px;
+            }
+
+            .chatbot-container {
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="mate-text">🧉 LITORALIA STORE 🧉</h1>
+            <div style="font-size: 1em; font-weight: 600; text-transform: uppercase;">
+                ¡EL MATE QUE TE CONECTA CON EL LITORAL! 🇦🇷
+            </div>
+        </div>
+
+        <div class="promo-banner">
+            🔥 ¡ENVÍO GRATIS en compras mayores a $5000! 🔥
+        </div>
+
+        <div class="content">
+            <div class="stats-bar">
+                ✨ +1000 materos felices • 🚚 Envíos a todo el país • 💚 100% Natural
+            </div>
+
+            <div class="products-grid">
+                <div class="product-card" data-product="mate-imperial">
+                    <div class="discount-badge">-30%</div>
+                    <div class="product-emoji">🧉</div>
+                    <div class="product-name">Mate Imperial Calabaza</div>
+                    <div class="product-price">
+                        <span class="old-price">$4500</span>
+                        $3150
+                    </div>
+                    <button class="buy-btn" onclick="addToCart('mate-imperial', 'Mate Imperial Calabaza', 3150, '🧉')">
+                        🛒 ¡AGREGAR AL CARRITO!
+                    </button>
+                </div>
+
+                <div class="product-card" data-product="bombilla-alpaca">
+                    <div class="discount-badge">-25%</div>
+                    <div class="product-emoji">🥄</div>
+                    <div class="product-name">Bombilla Alpaca Premium</div>
+                    <div class="product-price">
+                        <span class="old-price">$2000</span>
+                        $1500
+                    </div>
+                    <button class="buy-btn" onclick="addToCart('bombilla-alpaca', 'Bombilla Alpaca Premium', 1500, '🥄')">
+                        🛒 ¡AGREGAR AL CARRITO!
+                    </button>
+                </div>
+
+                <div class="product-card" data-product="yerba-premium">
+                    <div class="discount-badge">-20%</div>
+                    <div class="product-emoji">🌿</div>
+                    <div class="product-name">Yerba Premium Litoral x1kg</div>
+                    <div class="product-price">
+                        <span class="old-price">$2500</span>
+                        $2000
+                    </div>
+                    <button class="buy-btn" onclick="addToCart('yerba-premium', 'Yerba Premium Litoral x1kg', 2000, '🌿')">
+                        🛒 ¡AGREGAR AL CARRITO!
+                    </button>
+                </div>
+
+                <div class="product-card" data-product="termo-stanley">
+                    <div class="discount-badge">HOT</div>
+                    <div class="product-emoji">🌡️</div>
+                    <div class="product-name">Termo Stanley 1L Verde</div>
+                    <div class="product-price">$8900</div>
+                    <button class="buy-btn" onclick="addToCart('termo-stanley', 'Termo Stanley 1L Verde', 8900, '🌡️')">
+                        🛒 ¡AGREGAR AL CARRITO!
+                    </button>
+                </div>
+
+                <div class="product-card" data-product="kit-matero">
+                    <div class="discount-badge">COMBO</div>
+                    <div class="product-emoji">🎁</div>
+                    <div class="product-name">Kit Matero Completo</div>
+                    <div class="product-price">
+                        <span class="old-price">$12000</span>
+                        $9990
+                    </div>
+                    <button class="buy-btn" onclick="addToCart('kit-matero', 'Kit Matero Completo', 9990, '🎁')">
+                        🛒 ¡AGREGAR AL CARRITO!
+                    </button>
+                </div>
+
+                <div class="product-card" data-product="azucar-organica">
+                    <div class="discount-badge">ECO</div>
+                    <div class="product-emoji">🍯</div>
+                    <div class="product-name">Azúcar Orgánica 500g</div>
+                    <div class="product-price">$850</div>
+                    <button class="buy-btn" onclick="addToCart('azucar-organica', 'Azúcar Orgánica 500g', 850, '🍯')">
+                        🛒 ¡AGREGAR AL CARRITO!
+                    </button>
+                </div>
+            </div>
+
+            <div class="cart-section">
+                <div class="cart-title">🛒 TU CARRITO MATERO</div>
+                <div class="cart-items" id="cartItems">
+                    <div class="empty-cart">Tu carrito está vacío... ¡Agregá tu primer mate! 🧉</div>
+                </div>
+                <div class="cart-total" id="cartTotal" style="display: none;">
+                    Total: $<span id="totalAmount">0</span>
+                </div>
+                <button class="checkout-btn" id="checkoutBtn" onclick="processCheckout()" disabled>
+                    💳 ¡COMPRAR CON VENTALOCAL! ⚡
+                </button>
+            </div>
+
+            <div class="ventalocal-integration">
+                <div style="font-size: 1.2em; font-weight: 900; margin-bottom: 10px;">
+                    ⚡ POWERED BY VENTALOCAL ⚡
+                </div>
+                <div style="font-size: 0.9em; opacity: 0.9;">
+                    Facturación automática + Envío + Stock en tiempo real
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            🧉 LitoraliaStore - Tradición Argentina en cada mate 🇦🇷
+            <div style="margin-top: 5px; font-size: 0.9em;">
+                DEMO VentaLocal - E-commerce + Fiscal integrado ✨
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container">
+        <button class="chatbot-button" id="chatbotToggle" onclick="toggleChatbot()">
+            🧉
+            <div class="chatbot-notification" id="chatbotNotification">1</div>
+        </button>
+
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div>
+                    <div style="font-size: 16px;">🧉 Asistente Matero</div>
+                    <div style="font-size: 12px; opacity: 0.9;">Encontrá tu mate perfecto</div>
+                </div>
+                <button class="chatbot-close" onclick="toggleChatbot()">×</button>
+            </div>
+
+            <div class="chatbot-messages" id="chatbotMessages">
+                <!-- Messages will be added here -->
+            </div>
+
+            <div class="chatbot-input-area">
+                <input type="text" class="chatbot-input" id="chatbotInput" placeholder="¿Qué mate buscás?" onkeypress="handleChatbotEnter(event)">
+                <button class="chatbot-send" onclick="sendChatbotMessage()">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <div style="font-size: 3em; margin-bottom: 20px;">🎉</div>
+            <div style="font-size: 1.5em; font-weight: 900; margin-bottom: 15px;">
+                ¡COMPRA EXITOSA!
+            </div>
+            <div id="successDetails" style="margin-bottom: 20px;"></div>
+            <button onclick="closeSuccessModal()" style="background: white; color: #228B22; border: none; padding: 10px 20px; border-radius: 15px; font-weight: bold;">
+                ✨ ¡SEGUIR COMPRANDO!
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let isProcessing = false;
+        let chatbotOpen = false;
+        let hasSeenChatbot = false;
+
+        // Chatbot products database
+        const products = [
+            { id: 'mate-imperial', name: 'Mate Imperial Calabaza', price: 3150, oldPrice: 4500, emoji: '🧉', discount: '30%', keywords: ['mate', 'calabaza', 'imperial', 'tradicional', 'clasico'] },
+            { id: 'bombilla-alpaca', name: 'Bombilla Alpaca Premium', price: 1500, oldPrice: 2000, emoji: '🥄', discount: '25%', keywords: ['bombilla', 'alpaca', 'premium', 'metal', 'plata'] },
+            { id: 'yerba-premium', name: 'Yerba Premium Litoral x1kg', price: 2000, oldPrice: 2500, emoji: '🌿', discount: '20%', keywords: ['yerba', 'premium', 'litoral', '1kg', 'kilo', 'hierba'] },
+            { id: 'termo-stanley', name: 'Termo Stanley 1L Verde', price: 8900, emoji: '🌡️', keywords: ['termo', 'stanley', '1l', 'litro', 'verde', 'agua', 'caliente'] },
+            { id: 'kit-matero', name: 'Kit Matero Completo', price: 9990, oldPrice: 12000, emoji: '🎁', badge: 'COMBO', keywords: ['kit', 'combo', 'completo', 'set', 'todo', 'conjunto'] },
+            { id: 'azucar-organica', name: 'Azúcar Orgánica 500g', price: 850, emoji: '🍯', badge: 'ECO', keywords: ['azucar', 'organica', 'eco', 'natural', '500g', 'dulce', 'endulzante'] }
+        ];
+
+        // Chatbot responses
+        const responses = {
+            greetings: [
+                "¡Hola! 🧉 Soy tu asistente matero de LitoraliaStore. ¿Qué mate estás buscando?",
+                "¡Buenas! 🌿 Te ayudo a encontrar el mate perfecto. ¿Qué necesitás?",
+                "¡Hola matero! 🧉 ¿En qué te puedo ayudar hoy?"
+            ],
+            noProducts: [
+                "No encontré productos con esa búsqueda 😅 ¿Probás con 'mate', 'bombilla', 'yerba' o 'termo'?",
+                "Mmm, no tengo ese producto 🤔 Te muestro nuestros mates más populares:",
+                "No encuentro eso, pero mirá estos productos que te pueden interesar:"
+            ],
+            register: [
+                "¡Para comprar necesitás registrarte! 📧 Es súper fácil:",
+                "🚀 ¡Registrate ya para no perderte estas ofertas!"
+            ],
+            help: [
+                "Te puedo ayudar a:",
+                "¿Qué necesitás? Puedo:"
+            ]
+        };
+
+        // Chatbot functions
+        function toggleChatbot() {
+            const window = document.getElementById('chatbotWindow');
+            const notification = document.getElementById('chatbotNotification');
+
+            chatbotOpen = !chatbotOpen;
+
+            if (chatbotOpen) {
+                window.style.display = 'flex';
+                notification.style.display = 'none';
+                if (!hasSeenChatbot) {
+                    initializeChatbot();
+                    hasSeenChatbot = true;
+                }
+                document.getElementById('chatbotInput').focus();
+            } else {
+                window.style.display = 'none';
+            }
+        }
+
+        function initializeChatbot() {
+            const welcomeMessage = {
+                type: 'bot',
+                content: `¡Hola! 🧉 Soy Matebot, tu asistente personal de LitoraliaStore.
+
+Te ayudo a encontrar el mate perfecto para vos. Tenemos:
+• Mates de calabaza 🧉
+• Bombillas premium 🥄
+• Yerba del litoral 🌿
+• Termos Stanley 🌡️
+• Y mucho más...
+
+¿Qué estás buscando?`,
+                quickActions: ['Ver mates 🧉', 'Ver bombillas 🥄', 'Ver yerba 🌿', 'Ver ofertas 🔥']
+            };
+
+            addChatbotMessage(welcomeMessage);
+        }
+
+        function addChatbotMessage(message) {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chatbot-message';
+
+            if (message.type === 'bot') {
+                messageDiv.innerHTML = `
+                    <div class="bot-message">
+                        ${message.content}
+                        ${message.quickActions ? `
+                            <div class="quick-actions">
+                                ${message.quickActions.map(action =>
+                                    `<button class="quick-action" onclick="handleQuickAction('${action}')">${action}</button>`
+                                ).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="user-message">
+                        ${message.content}
+                    </div>
+                `;
+            }
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function sendChatbotMessage() {
+            const input = document.getElementById('chatbotInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            // Add user message
+            addChatbotMessage({ type: 'user', content: message });
+            input.value = '';
+
+            // Process message and respond
+            setTimeout(() => processChatbotMessage(message), 500);
+        }
+
+        function handleChatbotEnter(event) {
+            if (event.key === 'Enter') {
+                sendChatbotMessage();
+            }
+        }
+
+        function processChatbotMessage(message) {
+            const lowerMessage = message.toLowerCase();
+
+            // Greetings
+            if (['hola', 'buenas', 'hi', 'hello', 'hey'].some(greeting => lowerMessage.includes(greeting))) {
+                const response = responses.greetings[Math.floor(Math.random() * responses.greetings.length)];
+                addChatbotMessage({
+                    type: 'bot',
+                    content: response,
+                    quickActions: ['Ver mates 🧉', 'Ver ofertas 🔥', 'Registrarme 📧']
+                });
+                return;
+            }
+
+            // Registration queries
+            if (['registro', 'registrar', 'cuenta', 'login', 'sign'].some(word => lowerMessage.includes(word))) {
+                handleRegistrationQuery();
+                return;
+            }
+
+            // Help queries
+            if (['ayuda', 'help', 'como', 'que puedes', 'opciones'].some(word => lowerMessage.includes(word))) {
+                handleHelpQuery();
+                return;
+            }
+
+            // Product search
+            const foundProducts = searchProducts(lowerMessage);
+
+            if (foundProducts.length > 0) {
+                showProductResults(foundProducts, message);
+            } else {
+                handleNoResults(lowerMessage);
+            }
+        }
+
+        function searchProducts(query) {
+            return products.filter(product =>
+                product.keywords.some(keyword => query.includes(keyword)) ||
+                product.name.toLowerCase().includes(query)
+            );
+        }
+
+        function showProductResults(foundProducts, originalQuery) {
+            const productList = foundProducts.map(product => {
+                const discount = product.oldPrice ? ` (${product.discount} OFF!)` : '';
+                const price = product.oldPrice ?
+                    `<s>$${product.oldPrice}</s> $${product.price}` :
+                    `$${product.price}`;
+
+                return `
+                    <div class="product-suggestion" onclick="addToCart('${product.id}', '${product.name}', ${product.price}, '${product.emoji}')">
+                        <div style="font-weight: bold;">${product.emoji} ${product.name}${discount}</div>
+                        <div style="color: #FF4500; font-weight: bold;">${price}</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 5px;">👆 Click para agregar al carrito</div>
+                    </div>
+                `;
+            }).join('');
+
+            const response = foundProducts.length === 1 ?
+                `¡Encontré esto para "${originalQuery}"! 🎯` :
+                `Encontré ${foundProducts.length} productos para "${originalQuery}": 🛒`;
+
+            addChatbotMessage({
+                type: 'bot',
+                content: response + productList
+            });
+        }
+
+        function handleNoResults(query) {
+            const response = responses.noProducts[Math.floor(Math.random() * responses.noProducts.length)];
+            const popularProducts = products.slice(0, 3);
+
+            showProductResults(popularProducts, 'productos populares');
+        }
+
+        function handleQuickAction(action) {
+            if (action.includes('mates')) {
+                const mates = products.filter(p => p.keywords.includes('mate') || p.keywords.includes('calabaza'));
+                showProductResults(mates, 'mates');
+            } else if (action.includes('bombillas')) {
+                const bombillas = products.filter(p => p.keywords.includes('bombilla'));
+                showProductResults(bombillas, 'bombillas');
+            } else if (action.includes('yerba')) {
+                const yerba = products.filter(p => p.keywords.includes('yerba'));
+                showProductResults(yerba, 'yerba');
+            } else if (action.includes('ofertas')) {
+                const ofertas = products.filter(p => p.oldPrice);
+                showProductResults(ofertas, 'ofertas');
+            } else if (action.includes('Registrarme')) {
+                handleRegistrationQuery();
+            }
+        }
+
+        function handleRegistrationQuery() {
+            const response = `🚀 ¡Para registrarte en LitoraliaStore es súper fácil!
+
+**Paso 1:** Agregá productos al carrito 🛒
+**Paso 2:** Hacé click en "COMPRAR CON VENTALOCAL"
+**Paso 3:** Completás tus datos en el checkout
+**Paso 4:** ¡Listo! Ya tenés tu cuenta 🎉
+
+**Beneficios de registrarse:**
+✅ Envío gratis en compras +$5000
+✅ Descuentos exclusivos para miembros
+✅ Historial de compras y facturas
+✅ Soporte prioritario matero
+
+¿Empezamos agregando algo al carrito? 🧉`;
+
+            addChatbotMessage({
+                type: 'bot',
+                content: response,
+                quickActions: ['Ver ofertas 🔥', 'Kit completo 🎁', 'Mate + bombilla 🧉']
+            });
+        }
+
+        function handleHelpQuery() {
+            const response = `🤖 **Te puedo ayudar con:**
+
+🔍 **Buscar productos** - decime "mate", "bombilla", "yerba"
+🛒 **Agregar al carrito** - click en cualquier producto que te muestre
+💰 **Ver ofertas** - preguntame por "ofertas" o "descuentos"
+📧 **Registrarme** - te explico como crear tu cuenta
+🚚 **Envíos** - info sobre delivery y tiempos
+💡 **Recomendaciones** - te sugiero el mate perfecto
+
+**Ejemplos de búsquedas:**
+• "Quiero un mate de calabaza"
+• "Mostrame bombillas"
+• "¿Qué ofertas hay?"
+• "Kit para principiante"
+
+¿En qué te ayudo? 😊`;
+
+            addChatbotMessage({
+                type: 'bot',
+                content: response,
+                quickActions: ['Ver ofertas 🔥', 'Para principiantes 🧉', 'Productos premium ⭐']
+            });
+        }
+
+        // Override original addToCart to also respond via chatbot
+        const originalAddToCart = addToCart;
+        window.addToCart = function(id, name, price, emoji) {
+            originalAddToCart(id, name, price, emoji);
+
+            // If chatbot is open, confirm the addition
+            if (chatbotOpen) {
+                setTimeout(() => {
+                    addChatbotMessage({
+                        type: 'bot',
+                        content: `¡Genial! 🎉 Agregué "${name}" a tu carrito.
+
+¿Querés seguir comprando o ir directo al checkout? 🛒`,
+                        quickActions: ['Ver más productos 🛒', 'Ir al checkout 💳', '¿Qué más me recomendás? 🤔']
+                    });
+                }, 1000);
+            }
+        };
+
+        // Auto-show chatbot notification after 5 seconds
+        setTimeout(() => {
+            if (!hasSeenChatbot && !chatbotOpen) {
+                const notification = document.getElementById('chatbotNotification');
+                notification.style.display = 'flex';
+            }
+        }, 5000);
+
+        // Floating mate emojis
+        function createFloatingMate() {
+            const mates = ['🧉', '🌿', '🥄', '🌡️', '🍃', '💚'];
+            const mate = document.createElement('div');
+            mate.className = 'floating-mate';
+            mate.textContent = mates[Math.floor(Math.random() * mates.length)];
+            mate.style.left = Math.random() * window.innerWidth + 'px';
+            document.body.appendChild(mate);
+
+            setTimeout(() => mate.remove(), 8000);
+        }
+
+        // Add product to cart
+        function addToCart(id, name, price, emoji) {
+            const existingItem = cart.find(item => item.id === id);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    emoji: emoji,
+                    quantity: 1
+                });
+            }
+
+            updateCartDisplay();
+            showAddedToCartAnimation();
+        }
+
+        // Show animation when item added
+        function showAddedToCartAnimation() {
+            // Create a small floating notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(45deg, #32CD32, #228B22);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 15px;
+                font-weight: bold;
+                z-index: 9999;
+                animation: slideInRight 0.5s ease, fadeOut 0.5s ease 2s forwards;
+            `;
+            notification.innerHTML = '✅ ¡Agregado al carrito!';
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.remove(), 2500);
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            const cartTotalDiv = document.getElementById('cartTotal');
+            const totalAmountSpan = document.getElementById('totalAmount');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<div class="empty-cart">Tu carrito está vacío... ¡Agregá tu primer mate! 🧉</div>';
+                cartTotalDiv.style.display = 'none';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            let cartHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+
+                cartHTML += `
+                    <div class="cart-item">
+                        <div>
+                            ${item.emoji} ${item.name} x${item.quantity}
+                        </div>
+                        <div style="font-weight: bold; color: #FF4500;">
+                            $${itemTotal.toLocaleString()}
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartItemsDiv.innerHTML = cartHTML;
+            cartTotalDiv.style.display = 'block';
+            totalAmountSpan.textContent = total.toLocaleString();
+            checkoutBtn.disabled = false;
+        }
+
+        // Process checkout with VentaLocal
+        async function processCheckout() {
+            if (isProcessing || cart.length === 0) return;
+
+            isProcessing = true;
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            checkoutBtn.innerHTML = '⏳ PROCESANDO CON VENTALOCAL...';
+            checkoutBtn.disabled = true;
+
+            // Simulate VentaLocal processing
+            await simulateVentaLocalProcessing();
+
+            // Calculate total
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            // Create order for VentaLocal
+            const order = {
+                order_id: `LITORALIA_${Date.now()}`,
+                customer: {
+                    name: 'Cliente Matero',
+                    email: 'matero@litoralia.store',
+                    tax_condition: 'CF'
+                },
+                items: cart.map(item => ({
+                    description: `${item.name} x${item.quantity}`,
+                    quantity: item.quantity,
+                    unit_price: item.price
+                })),
+                total: total
+            };
+
+            // Show success
+            showSuccessModal(order);
+
+            // Reset cart
+            cart = [];
+            updateCartDisplay();
+
+            // Reset button
+            isProcessing = false;
+            checkoutBtn.innerHTML = '💳 ¡COMPRAR CON VENTALOCAL! ⚡';
+        }
+
+        // Simulate VentaLocal processing steps
+        async function simulateVentaLocalProcessing() {
+            const steps = [
+                '🛒 Procesando carrito...',
+                '💳 Procesando pago...',
+                '📦 Preparando envío...',
+                '🏛️ Generando factura AFIP...',
+                '📧 Enviando confirmación...'
+            ];
+
+            const checkoutBtn = document.getElementById('checkoutBtn');
+
+            for (let i = 0; i < steps.length; i++) {
+                await new Promise(resolve => setTimeout(resolve, 800));
+                checkoutBtn.innerHTML = steps[i];
+            }
+        }
+
+        // Show success modal
+        function showSuccessModal(order) {
+            const modal = document.getElementById('successModal');
+            const details = document.getElementById('successDetails');
+
+            // Create confetti
+            createConfetti();
+
+            details.innerHTML = `
+                <div style="text-align: left; background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px;">
+                    <div><strong>📋 Orden:</strong> ${order.order_id}</div>
+                    <div><strong>💰 Total:</strong> $${order.total.toLocaleString()}</div>
+                    <div><strong>🏛️ Factura:</strong> Generada automáticamente</div>
+                    <div><strong>📧 Email:</strong> Enviada a ${order.customer.email}</div>
+                    <div><strong>🚚 Envío:</strong> 2-3 días hábiles</div>
+                </div>
+                <div style="margin-top: 15px; font-size: 0.9em; opacity: 0.9;">
+                    ¡Gracias por elegir LitoraliaStore! 🧉
+                </div>
+            `;
+
+            modal.style.display = 'flex';
+        }
+
+        // Close success modal
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#32CD32', '#228B22', '#7CFC00', '#ADFF2F', '#9AFF9A'];
+
+            for(let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = '-10px';
+                    confetti.style.animation = `floatMate 4s linear forwards`;
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 40);
+            }
+        }
+
+        // Add CSS for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes fadeOut {
+                to { opacity: 0; transform: translateX(100%); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Floating mates
+            setInterval(createFloatingMate, 2500);
+
+            // Initial cart display
+            updateCartDisplay();
+        });
+    </script>
+</body>
+</html>

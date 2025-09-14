@@ -1,0 +1,276 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: ventalocal-db
+    environment:
+      POSTGRES_USER: ventalocal
+      POSTGRES_PASSWORD: ventalocal2024
+      POSTGRES_DB: ventalocal
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ventalocal"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: ventalocal-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MinIO (S3-compatible storage)
+  minio:
+    image: minio/minio:latest
+    container_name: ventalocal-storage
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ventalocal
+      MINIO_ROOT_PASSWORD: ventalocal2024
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # MeiliSearch (Search engine)
+  meilisearch:
+    image: getmeili/meilisearch:v1.5
+    container_name: ventalocal-search
+    ports:
+      - "7700:7700"
+    environment:
+      MEILI_MASTER_KEY: ventalocal_master_key_2024
+      MEILI_ENV: development
+    volumes:
+      - meilisearch_data:/meili_data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+      dockerfile: Dockerfile
+    container_name: ventalocal-api
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://ventalocal:ventalocal2024@postgres:5432/ventalocal
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: your-jwt-secret-key-2024
+      MP_ACCESS_TOKEN: ${MP_ACCESS_TOKEN}
+      FRONTEND_URL: http://localhost:3001
+      API_URL: http://localhost:3000
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_ACCESS_KEY: ventalocal
+      MINIO_SECRET_KEY: ventalocal2024
+      MEILISEARCH_HOST: http://meilisearch:7700
+      MEILISEARCH_KEY: ventalocal_master_key_2024
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      meilisearch:
+        condition: service_healthy
+    volumes:
+      - ./services/api-gateway:/app
+      - /app/node_modules
+    command: npm run dev
+
+  # eCommerce Frontend
+  ecommerce:
+    build:
+      context: ./apps/ecommerce
+      dockerfile: Dockerfile
+    container_name: ventalocal-store
+    ports:
+      - "3001:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3000
+      NEXT_PUBLIC_MINIO_URL: http://localhost:9000
+    depends_on:
+      - api-gateway
+    volumes:
+      - ./apps/ecommerce:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
+
+  # Admin Dashboard
+  admin:
+    build:
+      context: ./apps/admin-dashboard
+      dockerfile: Dockerfile
+    container_name: ventalocal-admin
+    ports:
+      - "3002:3000"
+    environment:
+      VITE_API_URL: http://localhost:3000
+      VITE_MINIO_URL: http://localhost:9000
+    depends_on:
+      - api-gateway
+    volumes:
+      - ./apps/admin-dashboard:/app
+      - /app/node_modules
+    command: npm run dev
+
+  # CRM Application
+  crm:
+    build:
+      context: ./apps/crm
+      dockerfile: Dockerfile
+    container_name: ventalocal-crm
+    ports:
+      - "3003:3000"
+    environment:
+      VITE_API_URL: http://localhost:3000
+    depends_on:
+      - api-gateway
+    volumes:
+      - ./apps/crm:/app
+      - /app/node_modules
+    command: npm run dev
+
+  # Nginx Reverse Proxy (for production-like environment)
+  nginx:
+    image: nginx:alpine
+    container_name: ventalocal-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./infrastructure/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infrastructure/nginx/sites:/etc/nginx/sites-enabled:ro
+    depends_on:
+      - api-gateway
+      - ecommerce
+      - admin
+      - crm
+    profiles:
+      - production
+
+  # Plausible Analytics (Privacy-first analytics)
+  plausible_db:
+    image: postgres:14-alpine
+    container_name: ventalocal-analytics-db
+    volumes:
+      - plausible_db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: plausible
+    profiles:
+      - analytics
+
+  plausible_events_db:
+    image: clickhouse/clickhouse-server:22.6-alpine
+    container_name: ventalocal-analytics-events
+    volumes:
+      - plausible_events_data:/var/lib/clickhouse
+    profiles:
+      - analytics
+
+  plausible:
+    image: plausible/analytics:latest
+    container_name: ventalocal-analytics
+    ports:
+      - "8000:8000"
+    command: sh -c "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh run"
+    depends_on:
+      - plausible_db
+      - plausible_events_db
+    environment:
+      BASE_URL: http://localhost:8000
+      SECRET_KEY_BASE: ${PLAUSIBLE_SECRET}
+      DATABASE_URL: postgres://postgres:plausible@plausible_db:5432/plausible_db
+      CLICKHOUSE_DATABASE_URL: http://plausible_events_db:8123/plausible_events_db
+      DISABLE_AUTH: "true"
+      DISABLE_REGISTRATION: "false"
+    profiles:
+      - analytics
+
+  # BullMQ Dashboard (Queue monitoring)
+  bull-board:
+    image: deadly0/bull-board:latest
+    container_name: ventalocal-queues
+    ports:
+      - "3004:3000"
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - redis
+    profiles:
+      - monitoring
+
+  # Grafana (Monitoring)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ventalocal-grafana
+    ports:
+      - "3005:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infrastructure/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./infrastructure/grafana/datasources:/etc/grafana/provisioning/datasources
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_INSTALL_PLUGINS: redis-datasource
+    profiles:
+      - monitoring
+
+  # Prometheus (Metrics)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ventalocal-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    profiles:
+      - monitoring
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+  meilisearch_data:
+  plausible_db_data:
+  plausible_events_data:
+  grafana_data:
+  prometheus_data:
+
+networks:
+  default:
+    name: ventalocal-network
+    driver: bridge

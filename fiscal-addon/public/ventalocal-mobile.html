@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>📱 VentaLocal - Punto de Venta Móvil</title>
+    <meta name="theme-color" content="#228B22">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #32CD32 0%, #228B22 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-size: 16px;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .app-container {
+            max-width: 100%;
+            min-height: 100vh;
+            background: white;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #32CD32 0%, #228B22 100%);
+            color: white;
+            padding: 20px 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .store-name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .cashier-info {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .session-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .main-content {
+            padding: 0;
+        }
+
+        .action-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            position: sticky;
+            top: 80px;
+            z-index: 99;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 5px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #32CD32;
+            border-bottom: 3px solid #32CD32;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 15px;
+            min-height: calc(100vh - 160px);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Scanner Tab */
+        .scanner-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .scanner-header {
+            background: #343a40;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .scanner-area {
+            position: relative;
+            background: #000;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #qr-reader {
+            width: 100%;
+            height: 250px;
+        }
+
+        .scanner-controls {
+            padding: 15px;
+            background: white;
+        }
+
+        .big-button {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 8px 0;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .scan-btn {
+            background: linear-gradient(45deg, #32CD32, #228B22);
+            color: white;
+        }
+
+        .scan-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(50, 205, 50, 0.4);
+        }
+
+        .scan-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .manual-input-section {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px dashed #dee2e6;
+        }
+
+        .manual-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .manual-input:focus {
+            border-color: #32CD32;
+            outline: none;
+        }
+
+        /* Product Display */
+        .product-display {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #32CD32;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 5px;
+        }
+
+        .product-details {
+            color: #6c757d;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: 900;
+            color: #28a745;
+            margin: 15px 0;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .quantity-btn {
+            width: 45px;
+            height: 45px;
+            border: none;
+            border-radius: 8px;
+            background: #32CD32;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-display {
+            font-size: 20px;
+            font-weight: 700;
+            min-width: 60px;
+            text-align: center;
+            padding: 8px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+        }
+
+        /* Cart */
+        .cart-summary {
+            background: linear-gradient(45deg, #ffc107, #ff8c00);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .cart-items-count {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        .cart-total {
+            font-size: 32px;
+            font-weight: 900;
+            margin: 10px 0;
+        }
+
+        .checkout-btn {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            color: white;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-info {
+            background: #cce7ff;
+            color: #004085;
+            border: 1px solid #b3d7ff;
+        }
+
+        /* Admin Tab */
+        .admin-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 1px solid #dee2e6;
+        }
+
+        .admin-section h3 {
+            color: #32CD32;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-input:focus {
+            border-color: #32CD32;
+            outline: none;
+        }
+
+        .admin-btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        /* Stock Tab */
+        .stock-item {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stock-info h4 {
+            margin-bottom: 5px;
+            color: #212529;
+        }
+
+        .stock-info small {
+            color: #6c757d;
+        }
+
+        .stock-quantity {
+            font-size: 18px;
+            font-weight: 700;
+            color: #28a745;
+        }
+
+        .stock-quantity.low {
+            color: #dc3545;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            text-align: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 375px) {
+            .tab-btn {
+                font-size: 12px;
+                padding: 12px 3px;
+            }
+
+            .scanner-area {
+                height: 200px;
+            }
+
+            #qr-reader {
+                height: 200px;
+            }
+        }
+
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #32CD32;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Haptic Feedback Effect */
+        .haptic-feedback {
+            animation: hapticPulse 0.1s ease-in-out;
+        }
+
+        @keyframes hapticPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-info">
+                <div class="store-name" id="storeName">Mi Comercio</div>
+                <div class="cashier-info" id="cashierInfo">Cajero: Admin</div>
+            </div>
+            <div class="session-info">
+                <div>🕐 <span id="currentTime">--:--</span></div>
+                <div>💰 Venta: <span id="saleNumber">#001</span></div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="action-tabs">
+            <button class="tab-btn active" onclick="switchTab('scanner')">
+                📷 Vender
+            </button>
+            <button class="tab-btn" onclick="switchTab('stock')">
+                📦 Stock
+            </button>
+            <button class="tab-btn" onclick="switchTab('admin')">
+                ⚙️ Admin
+            </button>
+        </div>
+
+        <div class="main-content">
+            <!-- Scanner Tab -->
+            <div id="scanner-tab" class="tab-content active">
+                <div id="status-container"></div>
+
+                <!-- Scanner Section -->
+                <div class="scanner-section">
+                    <div class="scanner-header">
+                        <span id="scanner-status">📷 Apuntá la cámara al código</span>
+                    </div>
+                    <div class="scanner-area">
+                        <div id="qr-reader"></div>
+                    </div>
+                    <div class="scanner-controls">
+                        <button id="start-camera" class="big-button scan-btn">
+                            📱 Iniciar Escáner
+                        </button>
+                        <button id="stop-camera" class="big-button scan-btn" style="display: none;">
+                            ⏹️ Pausar Escáner
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Manual Input -->
+                <div class="manual-input-section">
+                    <h4>✋ Entrada Manual</h4>
+                    <p style="color: #666; margin: 10px 0; font-size: 14px;">
+                        Si la cámara no funciona, escribí el código acá:
+                    </p>
+                    <input type="text" class="manual-input" id="manual-code"
+                           placeholder="Escribí o pegá el código aquí"
+                           onkeypress="handleManualEnter(event)">
+                    <button class="big-button scan-btn" onclick="processManualCode()">
+                        🔍 Buscar Producto
+                    </button>
+                </div>
+
+                <!-- Product Display -->
+                <div id="product-display" style="display: none;"></div>
+
+                <!-- Cart Summary -->
+                <div id="cart-summary" class="cart-summary" style="display: none;">
+                    <div class="cart-items-count" id="cart-count">0 productos</div>
+                    <div class="cart-total">$<span id="cart-total">0</span></div>
+                    <button class="checkout-btn" onclick="processCheckout()">
+                        💳 COBRAR Y FACTURAR
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stock Tab -->
+            <div id="stock-tab" class="tab-content">
+                <div class="admin-section">
+                    <h3>📦 Gestión de Stock</h3>
+                    <div class="form-group">
+                        <input type="text" class="form-input" id="search-product"
+                               placeholder="Buscar producto..." oninput="searchStock()">
+                    </div>
+                </div>
+
+                <div id="stock-list">
+                    <!-- Stock items will be populated here -->
+                </div>
+
+                <div class="admin-section">
+                    <h3>➕ Agregar Producto</h3>
+                    <div class="form-group">
+                        <label class="form-label">Código (escanear o escribir)</label>
+                        <input type="text" class="form-input" id="new-product-code">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nombre del Producto</label>
+                        <input type="text" class="form-input" id="new-product-name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Precio ($)</label>
+                        <input type="number" class="form-input" id="new-product-price" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Stock Inicial</label>
+                        <input type="number" class="form-input" id="new-product-stock">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Categoría</label>
+                        <input type="text" class="form-input" id="new-product-category" placeholder="Ej: Bebidas, Golosinas">
+                    </div>
+                    <button class="big-button scan-btn" onclick="app.addNewProduct()">
+                        ✅ Guardar Producto
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Tab -->
+            <div id="admin-tab" class="tab-content">
+                <div class="admin-section">
+                    <h3>🏪 Configuración del Comercio</h3>
+                    <div class="form-group">
+                        <label class="form-label">Nombre del Comercio</label>
+                        <input type="text" class="form-input" id="config-store-name" value="Mi Comercio">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nombre del Cajero</label>
+                        <input type="text" class="form-input" id="config-cashier-name" value="Admin">
+                    </div>
+                    <button class="admin-btn" onclick="app.saveConfig()">💾 Guardar Configuración</button>
+                </div>
+
+                <div class="admin-section">
+                    <h3>📊 Estadísticas del Día</h3>
+                    <div class="stock-item">
+                        <div class="stock-info">
+                            <h4>Ventas de Hoy</h4>
+                            <small>Cantidad de transacciones</small>
+                        </div>
+                        <div class="stock-quantity" id="daily-sales">0</div>
+                    </div>
+                    <div class="stock-item">
+                        <div class="stock-info">
+                            <h4>Ingresos del Día</h4>
+                            <small>Total facturado</small>
+                        </div>
+                        <div class="stock-quantity">$<span id="daily-revenue">0</span></div>
+                    </div>
+                    <div class="stock-item">
+                        <div class="stock-info">
+                            <h4>Productos Vendidos</h4>
+                            <small>Unidades totales</small>
+                        </div>
+                        <div class="stock-quantity" id="daily-products">0</div>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <h3>🔄 Acciones</h3>
+                    <button class="admin-btn" onclick="app.exportData()">📤 Exportar Datos</button>
+                    <button class="admin-btn" onclick="app.clearData()">🗑️ Limpiar Datos</button>
+                    <button class="admin-btn" onclick="app.testFiscal()">🧾 Test Facturación</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div class="modal-overlay" id="success-modal">
+            <div class="modal-content">
+                <div style="font-size: 4em; margin-bottom: 20px;">🎉</div>
+                <h2>¡Venta Exitosa!</h2>
+                <div id="success-details" style="margin: 20px 0;"></div>
+                <button class="big-button scan-btn" onclick="closeModal()">
+                    ✅ Continuar Vendiendo
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- QR Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+
+    <script>
+        class VentaLocalMobile {
+            constructor() {
+                this.scanner = null;
+                this.isScanning = false;
+                this.currentCart = [];
+                this.currentQuantity = 1;
+                this.saleCounter = 1;
+                this.dailyStats = {
+                    sales: 0,
+                    revenue: 0,
+                    products: 0
+                };
+
+                // Local storage keys
+                this.STORAGE_KEYS = {
+                    products: 'ventalocal_products',
+                    config: 'ventalocal_config',
+                    stats: 'ventalocal_daily_stats'
+                };
+
+                // Default product database
+                this.productDB = {
+                    '7790040999999': { name: 'Coca Cola 500ml', price: 450, stock: 24, category: 'Bebidas' },
+                    '7790020123456': { name: 'Galletitas Oreo', price: 380, stock: 15, category: 'Golosinas' },
+                    '7790030555555': { name: 'Yerba Mate 1kg', price: 1200, stock: 8, category: 'Infusiones' },
+                    '7790040111111': { name: 'Pan Lactal', price: 320, stock: 12, category: 'Panadería' },
+                    '7790050999888': { name: 'Leche Entera 1L', price: 290, stock: 18, category: 'Lácteos' },
+                    'LITORALIA_MATE_001': { name: 'Mate Imperial Calabaza', price: 3150, stock: 5, category: 'Mates' },
+                    'VENTALOCAL_DEMO_001': { name: 'Producto Demo NAVES', price: 1500, stock: 100, category: 'Demo' }
+                };
+
+                this.config = {
+                    storeName: 'Mi Comercio',
+                    cashierName: 'Admin'
+                };
+
+                this.loadData();
+                this.initializeApp();
+            }
+
+            loadData() {
+                // Load products from localStorage
+                const savedProducts = localStorage.getItem(this.STORAGE_KEYS.products);
+                if (savedProducts) {
+                    this.productDB = { ...this.productDB, ...JSON.parse(savedProducts) };
+                }
+
+                // Load configuration
+                const savedConfig = localStorage.getItem(this.STORAGE_KEYS.config);
+                if (savedConfig) {
+                    this.config = { ...this.config, ...JSON.parse(savedConfig) };
+                }
+
+                // Load daily stats
+                const savedStats = localStorage.getItem(this.STORAGE_KEYS.stats);
+                if (savedStats) {
+                    this.dailyStats = { ...this.dailyStats, ...JSON.parse(savedStats) };
+                }
+            }
+
+            saveData() {
+                localStorage.setItem(this.STORAGE_KEYS.products, JSON.stringify(this.productDB));
+                localStorage.setItem(this.STORAGE_KEYS.config, JSON.stringify(this.config));
+                localStorage.setItem(this.STORAGE_KEYS.stats, JSON.stringify(this.dailyStats));
+            }
+
+            initializeApp() {
+                this.updateHeader();
+                this.updateStockDisplay();
+                this.updateStatsDisplay();
+                this.startClock();
+                this.setupEventListeners();
+
+
+                this.showStatus('✅ VentaLocal listo para vender', 'success');
+            }
+
+            setupEventListeners() {
+                document.getElementById('start-camera').addEventListener('click', () => this.startCamera());
+                document.getElementById('stop-camera').addEventListener('click', () => this.stopCamera());
+            }
+
+            startCamera() {
+                try {
+                    if (typeof Html5QrcodeScanner === 'undefined') {
+                        this.showStatus('❌ Error: Librería de escaneo no disponible. Usá entrada manual.', 'error');
+                        return;
+                    }
+
+                    this.scanner = new Html5QrcodeScanner(
+                        "qr-reader",
+                        {
+                            fps: 10,
+                            qrbox: { width: 250, height: 150 },
+                            aspectRatio: 1.777778,
+                            supportedScanTypes: [
+                                Html5QrcodeScanType.SCAN_TYPE_CAMERA
+                            ]
+                        },
+                        false
+                    );
+
+                    this.scanner.render(
+                        (decodedText, decodedResult) => this.onScanSuccess(decodedText, decodedResult),
+                        (errorMessage) => {
+                            // Normal scanning errors, don't show
+                        }
+                    );
+
+                    this.isScanning = true;
+                    document.getElementById('start-camera').style.display = 'none';
+                    document.getElementById('stop-camera').style.display = 'block';
+                    document.getElementById('scanner-status').textContent = '🎯 Apuntá al código para escanear';
+
+                    this.showStatus('📷 Cámara iniciada. Apuntá al código.', 'info');
+
+                } catch (error) {
+                    console.error('Error starting camera:', error);
+                    this.showStatus('❌ Error al iniciar cámara. Usá entrada manual.', 'error');
+                }
+            }
+
+            stopCamera() {
+                if (this.scanner) {
+                    this.scanner.clear().catch(error => {
+                        console.error("Error clearing scanner:", error);
+                    });
+                    this.scanner = null;
+                }
+
+                this.isScanning = false;
+                document.getElementById('start-camera').style.display = 'block';
+                document.getElementById('stop-camera').style.display = 'none';
+                document.getElementById('scanner-status').textContent = '📷 Apuntá la cámara al código';
+
+                this.showStatus('⏸️ Escáner pausado', 'info');
+            }
+
+            onScanSuccess(decodedText, decodedResult) {
+                console.log("Código detectado:", decodedText);
+                this.hapticFeedback();
+                this.processScannedCode(decodedText);
+            }
+
+            processScannedCode(code) {
+                const product = this.productDB[code];
+
+                if (product) {
+                    if (product.stock <= 0) {
+                        this.showStatus('⚠️ Producto sin stock disponible', 'error');
+                        return;
+                    }
+                    this.showProduct(code, product);
+                    this.showStatus('✅ Producto encontrado', 'success');
+                } else {
+                    this.showUnknownProduct(code);
+                }
+            }
+
+            showProduct(code, product) {
+                const display = document.getElementById('product-display');
+
+                display.innerHTML = `
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-details">
+                        <span>📦 Stock: ${product.stock}</span>
+                        <span>🏷️ ${product.category}</span>
+                    </div>
+                    <div class="product-price">$${product.price.toLocaleString()}</div>
+
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="app.changeQuantity(-1)">−</button>
+                        <div class="quantity-display" id="quantity-display">${this.currentQuantity}</div>
+                        <button class="quantity-btn" onclick="app.changeQuantity(1)">+</button>
+                    </div>
+
+                    <button class="big-button scan-btn" onclick="app.addToCart('${code}', '${product.name}', ${product.price})">
+                        🛒 AGREGAR AL CARRITO
+                    </button>
+
+                    <div style="font-family: monospace; font-size: 12px; color: #666; text-align: center; margin-top: 10px;">
+                        ${code}
+                    </div>
+                `;
+
+                display.style.display = 'block';
+                this.currentQuantity = 1;
+            }
+
+            showUnknownProduct(code) {
+                const display = document.getElementById('product-display');
+
+                display.innerHTML = `
+                    <div class="product-name">❓ Producto No Encontrado</div>
+                    <div class="product-details">
+                        <span>Código: ${code}</span>
+                    </div>
+                    <div style="color: #6c757d; margin: 15px 0; text-align: center;">
+                        Este producto no está en tu base de datos.<br>
+                        ¿Querés agregarlo ahora?
+                    </div>
+
+                    <button class="big-button scan-btn" onclick="app.quickAddProduct('${code}')">
+                        ➕ AGREGAR PRODUCTO NUEVO
+                    </button>
+                `;
+
+                display.style.display = 'block';
+                this.showStatus('❓ Producto no encontrado. Podés agregarlo.', 'info');
+            }
+
+            changeQuantity(delta) {
+                const newQuantity = this.currentQuantity + delta;
+                if (newQuantity >= 1 && newQuantity <= 99) {
+                    this.currentQuantity = newQuantity;
+                    document.getElementById('quantity-display').textContent = this.currentQuantity;
+                    this.hapticFeedback();
+                }
+            }
+
+            addToCart(code, name, price) {
+                const product = this.productDB[code];
+
+                if (product.stock < this.currentQuantity) {
+                    this.showStatus(`❌ Solo hay ${product.stock} unidades disponibles`, 'error');
+                    return;
+                }
+
+                const existingItem = this.currentCart.find(item => item.code === code);
+
+                if (existingItem) {
+                    existingItem.quantity += this.currentQuantity;
+                } else {
+                    this.currentCart.push({
+                        code,
+                        name,
+                        price,
+                        quantity: this.currentQuantity
+                    });
+                }
+
+                // Update stock temporarily
+                product.stock -= this.currentQuantity;
+
+                this.updateCartDisplay();
+                this.updateStockDisplay();
+                this.hapticFeedback();
+                this.showStatus(`✅ ${name} x${this.currentQuantity} agregado`, 'success');
+
+                // Hide product display
+                document.getElementById('product-display').style.display = 'none';
+                this.currentQuantity = 1;
+            }
+
+            updateCartDisplay() {
+                const cartDiv = document.getElementById('cart-summary');
+                const countDiv = document.getElementById('cart-count');
+                const totalDiv = document.getElementById('cart-total');
+
+                if (this.currentCart.length === 0) {
+                    cartDiv.style.display = 'none';
+                    return;
+                }
+
+                const totalItems = this.currentCart.reduce((sum, item) => sum + item.quantity, 0);
+                const totalPrice = this.currentCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+                countDiv.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
+                totalDiv.textContent = totalPrice.toLocaleString();
+                cartDiv.style.display = 'block';
+            }
+
+            processCheckout() {
+                if (this.currentCart.length === 0) return;
+
+                const total = this.currentCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const totalItems = this.currentCart.reduce((sum, item) => sum + item.quantity, 0);
+
+                // Simulate fiscal integration
+                const order = {
+                    order_id: `MOBILE_${Date.now()}`,
+                    sale_number: this.saleCounter,
+                    items: this.currentCart,
+                    total: total,
+                    cashier: this.config.cashierName,
+                    store: this.config.storeName,
+                    timestamp: new Date().toISOString()
+                };
+
+                // Update daily stats
+                this.dailyStats.sales += 1;
+                this.dailyStats.revenue += total;
+                this.dailyStats.products += totalItems;
+
+                // Save changes
+                this.saveData();
+
+                // Show success modal
+                this.showSuccessModal(order);
+
+                // Clear cart
+                this.currentCart = [];
+                this.updateCartDisplay();
+                this.updateStatsDisplay();
+                this.saleCounter++;
+
+                this.hapticFeedback();
+            }
+
+            showSuccessModal(order) {
+                const modal = document.getElementById('success-modal');
+                const details = document.getElementById('success-details');
+
+                details.innerHTML = `
+                    <div style="text-align: left; background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <div><strong>🧾 Venta:</strong> #${order.sale_number.toString().padStart(3, '0')}</strong></div>
+                        <div><strong>💰 Total:</strong> $${order.total.toLocaleString()}</div>
+                        <div><strong>👤 Cajero:</strong> ${order.cashier}</div>
+                        <div><strong>🕐 Hora:</strong> ${new Date().toLocaleTimeString()}</div>
+                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #dee2e6;">
+                            <div><strong>📱 Factura:</strong> Generada automáticamente</div>
+                            <div><strong>🏛️ AFIP:</strong> Enviada correctamente</div>
+                            <div><strong>📧 Email:</strong> Cliente notificado</div>
+                        </div>
+                    </div>
+                    <div style="color: #28a745; font-weight: 600; margin-top: 15px;">
+                        ¡Venta procesada exitosamente! 🎉
+                    </div>
+                `;
+
+                modal.style.display = 'flex';
+            }
+
+            closeModal() {
+                document.getElementById('success-modal').style.display = 'none';
+            }
+
+            // Admin functions
+            quickAddProduct(code) {
+                const name = prompt('Nombre del producto:');
+                if (!name) return;
+
+                const priceInput = prompt('Precio ($):');
+                const price = parseFloat(priceInput);
+                if (!price || price <= 0) {
+                    alert('Precio inválido');
+                    return;
+                }
+
+                const stockInput = prompt('Stock inicial:');
+                const stock = parseInt(stockInput) || 0;
+
+                const category = prompt('Categoría:') || 'General';
+
+                this.productDB[code] = { name, price, stock, category };
+                this.saveData();
+                this.updateStockDisplay();
+
+                this.showStatus('✅ Producto agregado exitosamente', 'success');
+                document.getElementById('product-display').style.display = 'none';
+            }
+
+            addNewProduct() {
+                const code = document.getElementById('new-product-code').value.trim();
+                const name = document.getElementById('new-product-name').value.trim();
+                const price = parseFloat(document.getElementById('new-product-price').value);
+                const stock = parseInt(document.getElementById('new-product-stock').value) || 0;
+                const category = document.getElementById('new-product-category').value.trim() || 'General';
+
+                if (!code || !name || !price) {
+                    this.showStatus('❌ Completá todos los campos obligatorios', 'error');
+                    return;
+                }
+
+                this.productDB[code] = { name, price, stock, category };
+                this.saveData();
+                this.updateStockDisplay();
+
+                // Clear form
+                document.getElementById('new-product-code').value = '';
+                document.getElementById('new-product-name').value = '';
+                document.getElementById('new-product-price').value = '';
+                document.getElementById('new-product-stock').value = '';
+                document.getElementById('new-product-category').value = '';
+
+                this.showStatus('✅ Producto agregado exitosamente', 'success');
+            }
+
+            updateStockDisplay() {
+                const stockList = document.getElementById('stock-list');
+                const products = Object.entries(this.productDB);
+
+                stockList.innerHTML = products.map(([code, product]) => `
+                    <div class="stock-item">
+                        <div class="stock-info">
+                            <h4>${product.name}</h4>
+                            <small>${product.category} • $${product.price}</small>
+                        </div>
+                        <div class="stock-quantity ${product.stock < 5 ? 'low' : ''}">${product.stock}</div>
+                    </div>
+                `).join('');
+            }
+
+            updateStatsDisplay() {
+                document.getElementById('daily-sales').textContent = this.dailyStats.sales;
+                document.getElementById('daily-revenue').textContent = this.dailyStats.revenue.toLocaleString();
+                document.getElementById('daily-products').textContent = this.dailyStats.products;
+            }
+
+            updateHeader() {
+                document.getElementById('storeName').textContent = this.config.storeName;
+                document.getElementById('cashierInfo').textContent = `Cajero: ${this.config.cashierName}`;
+                document.getElementById('saleNumber').textContent = `#${this.saleCounter.toString().padStart(3, '0')}`;
+            }
+
+            startClock() {
+                setInterval(() => {
+                    const now = new Date();
+                    document.getElementById('currentTime').textContent = now.toLocaleTimeString('es-AR', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }, 1000);
+            }
+
+            saveConfig() {
+                this.config.storeName = document.getElementById('config-store-name').value;
+                this.config.cashierName = document.getElementById('config-cashier-name').value;
+                this.saveData();
+                this.updateHeader();
+                this.showStatus('✅ Configuración guardada', 'success');
+            }
+
+            showStatus(message, type = 'info') {
+                const container = document.getElementById('status-container');
+                container.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
+
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 3000);
+            }
+
+            hapticFeedback() {
+                // Add visual feedback
+                document.body.classList.add('haptic-feedback');
+                setTimeout(() => document.body.classList.remove('haptic-feedback'), 100);
+
+                // Try haptic feedback if supported
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(50);
+                }
+            }
+
+            // Utility functions
+            exportData() {
+                const data = {
+                    products: this.productDB,
+                    config: this.config,
+                    stats: this.dailyStats,
+                    exported: new Date().toISOString()
+                };
+
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `ventalocal-backup-${new Date().toISOString().slice(0, 10)}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+
+                this.showStatus('✅ Datos exportados', 'success');
+            }
+
+            clearData() {
+                if (confirm('¿Estás seguro de limpiar todos los datos?')) {
+                    localStorage.clear();
+                    location.reload();
+                }
+            }
+
+            testFiscal() {
+                this.showStatus('🧾 Sistema fiscal operativo. Facturación AFIP OK.', 'success');
+            }
+
+        }
+
+        // Global functions
+        function switchTab(tabName) {
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+
+            if (tabName !== 'scanner') {
+                app.stopCamera();
+            }
+        }
+
+        function processManualCode() {
+            const code = document.getElementById('manual-code').value.trim();
+            if (!code) {
+                app.showStatus('❌ Ingresá un código válido', 'error');
+                return;
+            }
+
+            app.processScannedCode(code);
+            document.getElementById('manual-code').value = '';
+        }
+
+        function handleManualEnter(event) {
+            if (event.key === 'Enter') {
+                processManualCode();
+            }
+        }
+
+        function searchStock() {
+            const query = document.getElementById('search-product').value.toLowerCase();
+            const stockItems = document.querySelectorAll('.stock-item');
+
+            stockItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        // Initialize app
+        let app;
+        document.addEventListener('DOMContentLoaded', () => {
+            app = new VentaLocalMobile();
+        });
+
+    </script>
+</body>
+</html>

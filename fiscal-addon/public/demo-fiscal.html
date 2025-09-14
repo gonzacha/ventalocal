@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 VentaLocal - ¡REVOLUCIÓN FISCAL! 💰</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24, #f0932b, #eb4d4b, #6c5ce7);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 420px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.95);
+            border-radius: 25px;
+            box-shadow: 0 30px 100px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+            border: 3px solid #fff;
+        }
+
+        .floating-emoji {
+            position: fixed;
+            font-size: 30px;
+            z-index: 1000;
+            pointer-events: none;
+            animation: float 6s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff4757 0%, #ff3838 50%, #ff4757 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: bounce 1s ease infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-10px); }
+        }
+
+        .fire-text {
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ffee58);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .savings-banner {
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .savings-banner::after {
+            content: '💸';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            animation: moneyRain 1s ease infinite alternate;
+        }
+
+        @keyframes moneyRain {
+            from { transform: translateY(-50%) rotate(0deg); }
+            to { transform: translateY(-70%) rotate(15deg); }
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .mega-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            transform: scale(1);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .stat-card:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 900;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        .demo-section {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 25px;
+            border: 3px dashed #fd79a8;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-section::before {
+            content: '🚀';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 2em;
+            animation: rocket 2s ease infinite;
+        }
+
+        @keyframes rocket {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .demo-title {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 800;
+            color: #2d3436;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 3px solid #fd79a8;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #ff3838;
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 56, 56, 0.3);
+        }
+
+        .mega-button {
+            background: linear-gradient(45deg, #ff4757, #ff3838, #ff4757);
+            background-size: 200% 200%;
+            color: white;
+            border: none;
+            padding: 20px 25px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            font-weight: 900;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: gradientMove 2s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .mega-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 56, 56, 0.4);
+        }
+
+        .mega-button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .mega-button:disabled {
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 25px;
+            border-radius: 20px;
+            animation: slideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .result.success {
+            background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+            color: white;
+            border: 3px solid #74b9ff;
+        }
+
+        .result.processing {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            color: #2d3436;
+            border: 3px solid #fd79a8;
+        }
+
+        .result.error {
+            background: linear-gradient(135deg, #ff4757, #ff3838);
+            color: white;
+            border: 3px solid #ff6b6b;
+        }
+
+        .urgency-bar {
+            background: #ff4757;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            animation: pulse 1s ease infinite;
+            font-size: 0.9em;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .benefits-grid {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .benefit-card {
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid #fd79a8;
+            text-align: center;
+            transform: translateY(0);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 0 15px 35px rgba(253, 121, 168, 0.3);
+        }
+
+        .benefit-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .countdown {
+            background: linear-gradient(45deg, #ff6b6b, #ff5722);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 15px 0;
+            font-weight: 900;
+            animation: countdownPulse 1s ease infinite;
+        }
+
+        @keyframes countdownPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+                max-width: none;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .mega-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .price-slash {
+            position: relative;
+            color: #ff4757;
+            font-weight: 900;
+        }
+
+        .price-slash::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 3px;
+            background: #ff4757;
+            transform: rotate(-15deg);
+        }
+
+        .new-price {
+            color: #00d2ff;
+            font-weight: 900;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="fire-text">🔥 VENTALOCAL 🔥</h1>
+            <div style="font-size: 1.1em; font-weight: 600; text-transform: uppercase;">
+                ¡REVOLUCIÓN FISCAL ARGENTINA! 🇦🇷
+            </div>
+        </div>
+
+        <div class="savings-banner">
+            🚨 ¡AHORRA <span class="price-slash">$800.000</span> <span class="new-price">$0</span> HOY! 🚨
+        </div>
+
+        <div class="urgency-bar">
+            ⏰ ¡OFERTA LIMITADA NAVES 2024! ⏰
+        </div>
+
+        <div class="content">
+            <div class="countdown">
+                <div style="font-size: 1.2em;">🎯 TIEMPO LIMITADO</div>
+                <div id="countdown" style="font-size: 1.5em; margin-top: 5px;">00:59:59</div>
+            </div>
+
+            <div class="mega-stats">
+                <div class="stat-card" style="background: linear-gradient(135deg, #ff6b6b, #ff4757);">
+                    <div class="stat-number">$800K</div>
+                    <div class="stat-label">💸 AHORRAS VS OTROS</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #00d2ff, #3a7bd5);">
+                    <div class="stat-number">30</div>
+                    <div class="stat-label">📄 FACTURAS GRATIS</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #4ecdc4, #44a08d);">
+                    <div class="stat-number">1</div>
+                    <div class="stat-label">👆 CLICK = FACTURA</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">🌟 DISPONIBLE</div>
+                </div>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎁</div>
+                    <strong>FREEMIUM REAL</strong><br>
+                    30 facturas gratis vs $800K inicial
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <strong>SÚPER BARATO</strong><br>
+                    $25 vs $80 por factura extra
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📱</div>
+                    <strong>WHATSAPP FIRST</strong><br>
+                    90% PyMEs vende por WhatsApp
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🚀</div>
+                    <strong>TODO EN UNO</strong><br>
+                    E-commerce + Fiscal + Stock
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <div class="demo-title">
+                    🎯 ¡DEMO EN VIVO NAVES! 🎯
+                </div>
+                <div style="text-align: center; margin-bottom: 20px; font-weight: 700; color: #2d3436;">
+                    ⚡ DE VENTA A FACTURA EN 1 SEGUNDO ⚡
+                </div>
+
+                <div class="form-group">
+                    <label for="customer">👤 CLIENTE</label>
+                    <input type="text" id="customer" placeholder="Nombre del cliente VIP" value="María González">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">📧 EMAIL</label>
+                    <input type="email" id="email" placeholder="Email para factura automática" value="maria@ejemplo.com.ar">
+                </div>
+
+                <div class="form-group">
+                    <label for="product">🛍️ PRODUCTO</label>
+                    <input type="text" id="product" placeholder="¿Qué vende tu PyME?" value="Producto NAVES 2024 🏆">
+                </div>
+
+                <div class="form-group">
+                    <label for="price">💲 PRECIO (ARS)</label>
+                    <input type="number" id="price" placeholder="Precio en pesos" value="1500">
+                </div>
+
+                <button id="processBtn" class="mega-button" onclick="processDemo()">
+                    🚀 ¡VENDER + FACTURAR AHORA! 💰
+                </button>
+
+                <div id="result" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            🏆 VentaLocal - El Futuro de las PyMEs Argentinas 🇦🇷
+            <div style="margin-top: 5px; font-size: 0.9em;">
+                NAVES 2024 - ¡Democratizando la Tecnología! ✨
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let processingDemo = false;
+        let countdownInterval;
+
+        // Countdown timer
+        function startCountdown() {
+            let timeLeft = 3599; // 59:59
+            countdownInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('countdown').textContent =
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                timeLeft--;
+                if (timeLeft < 0) timeLeft = 3599; // Reset
+            }, 1000);
+        }
+
+        // Floating emojis
+        function createFloatingEmoji() {
+            const emojis = ['💰', '🚀', '⚡', '💎', '🔥', '✨', '🎯', '💸'];
+            const emoji = document.createElement('div');
+            emoji.className = 'floating-emoji';
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = Math.random() * window.innerWidth + 'px';
+            document.body.appendChild(emoji);
+
+            setTimeout(() => emoji.remove(), 6000);
+        }
+
+        // Confetti effect
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b'];
+
+            for(let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = '-10px';
+                    confetti.style.animation = `float 3s linear forwards`;
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        async function processDemo() {
+            if (processingDemo) return;
+
+            processingDemo = true;
+            const btn = document.getElementById('processBtn');
+            const originalText = btn.innerHTML;
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> ¡PROCESANDO MAGIA!';
+
+            const data = {
+                customer_name: document.getElementById('customer').value.trim(),
+                customer_email: document.getElementById('email').value.trim(),
+                product: document.getElementById('product').value.trim(),
+                price: parseFloat(document.getElementById('price').value)
+            };
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result processing';
+
+            // Validaciones
+            if (!data.customer_name || !data.customer_email || !data.product || !data.price) {
+                showError('❌ ¡Completa todos los campos para la MAGIA!');
+                resetButton();
+                return;
+            }
+
+            if (data.price <= 0) {
+                showError('❌ ¡El precio debe ser mayor a $0!');
+                resetButton();
+                return;
+            }
+
+            // Procesamiento animado
+            await simulateProcessing();
+
+            try {
+                const mockResult = {
+                    success: true,
+                    order_id: `VL_NAVES_${Date.now()}`,
+                    invoice: {
+                        cae: generateCAE(),
+                        invoice_number: generateInvoiceNumber(),
+                        cae_due_date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toLocaleDateString('es-AR'),
+                        pdf_url: '#demo-pdf',
+                        issued_at: new Date().toLocaleString('es-AR')
+                    },
+                    processing_time: '0.8 segundos'
+                };
+
+                if (mockResult.success) {
+                    // Efectos de celebración
+                    createConfetti();
+
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <div style="text-align: center; font-size: 1.5em; margin-bottom: 15px;">
+                            🎉 ¡ÉXITO TOTAL! 🎉
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; margin: 15px 0;">
+                            <div style="display: grid; gap: 10px; font-weight: 600;">
+                                <div>📋 <strong>Orden:</strong> ${mockResult.order_id}</div>
+                                <div>🏛️ <strong>CAE AFIP:</strong> ${mockResult.invoice.cae}</div>
+                                <div>📄 <strong>Factura:</strong> ${mockResult.invoice.invoice_number}</div>
+                                <div>📅 <strong>Válido hasta:</strong> ${mockResult.invoice.cae_due_date}</div>
+                                <div>📧 <strong>PDF enviado a:</strong> ${data.customer_email}</div>
+                                <div>⚡ <strong>Tiempo:</strong> ${mockResult.processing_time}</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; font-size: 1.2em; margin-top: 20px;">
+                            🚀 <strong>¡${data.customer_name} ya tiene su factura!</strong> 🚀
+                        </div>
+                        <div style="font-style: italic; text-align: center; margin-top: 15px; opacity: 0.9;">
+                            💡 En producción: integración real con AFIP
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                showError(`❌ Error: ${error.message}`);
+            }
+
+            resetButton();
+
+            function resetButton() {
+                processingDemo = false;
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+
+            function showError(message) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `<div style="text-align: center; font-size: 1.2em;">${message}</div>`;
+            }
+        }
+
+        async function simulateProcessing() {
+            const steps = [
+                '🔍 Validando cliente...',
+                '💰 Calculando impuestos...',
+                '🏛️ Conectando con AFIP...',
+                '📋 Generando CAE...',
+                '📄 Creando PDF...',
+                '📧 Enviando factura...',
+                '🎯 ¡Listo para vender más!'
+            ];
+
+            const resultDiv = document.getElementById('result');
+
+            for (let i = 0; i < steps.length; i++) {
+                await new Promise(resolve => setTimeout(resolve, 200));
+
+                const completed = steps.slice(0, i + 1).map(step => `✅ ${step}`).join('<br>');
+                const current = i < steps.length - 1 ? `<br>⏳ ${steps[i + 1]}` : '';
+
+                resultDiv.innerHTML = `
+                    <div style="text-align: center; font-size: 1.3em; margin-bottom: 15px;">
+                        ⚡ ¡PROCESANDO SÚPER RÁPIDO! ⚡
+                    </div>
+                    <div style="text-align: left; line-height: 1.6;">
+                        ${completed}${current}
+                    </div>
+                `;
+            }
+        }
+
+        function generateCAE() {
+            return Math.random().toString().slice(2, 16).padEnd(14, '0');
+        }
+
+        function generateInvoiceNumber() {
+            const pos = '0001';
+            const number = Math.floor(Math.random() * 99999999).toString().padStart(8, '0');
+            return `${pos}-${number}`;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            startCountdown();
+
+            // Floating emojis
+            setInterval(createFloatingEmoji, 2000);
+
+            // Auto-focus
+            document.getElementById('customer').focus();
+        });
+    </script>
+</body>
+</html>

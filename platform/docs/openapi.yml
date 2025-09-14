@@ -1,0 +1,865 @@
+openapi: 3.0.3
+info:
+  title: VentaLocal Platform API
+  description: |
+    Multi-tenant eCommerce, CRM & ERP platform API for local PyME businesses
+
+    ## Authentication
+    Most endpoints require JWT authentication via `Authorization: Bearer <token>` header.
+
+    ## Multi-tenancy
+    All eCommerce endpoints require `x-tenant-id` header with tenant slug or ID.
+
+    ## Rate Limiting
+    API is rate limited to 100 requests per 15 minutes per IP.
+
+    ## Error Handling
+    API returns standard HTTP status codes with JSON error responses:
+    ```json
+    {
+      "error": "Error message",
+      "code": "ERROR_CODE",
+      "details": {}
+    }
+    ```
+  version: 1.0.0
+  contact:
+    name: VentaLocal Platform Team
+    email: dev@ventalocal.com.ar
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3000
+    description: Development server
+  - url: https://api.ventalocal.com.ar
+    description: Production server
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      description: Returns API health status
+      tags:
+        - System
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: string
+                    format: date-time
+                  services:
+                    type: object
+                    description: Status of dependent services
+
+  /api/products:
+    get:
+      summary: Get products
+      description: Retrieve paginated list of products for a tenant
+      tags:
+        - eCommerce
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: search
+          in: query
+          description: Search in product name and description
+          schema:
+            type: string
+        - name: category
+          in: query
+          description: Filter by category slug
+          schema:
+            type: string
+        - name: featured
+          in: query
+          description: Filter featured products
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Products retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '400':
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/products/{slug}:
+    get:
+      summary: Get single product
+      description: Retrieve a single product by slug
+      tags:
+        - eCommerce
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/categories:
+    get:
+      summary: Get categories
+      description: Retrieve all categories for a tenant
+      tags:
+        - eCommerce
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: Categories retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+
+  /api/orders:
+    post:
+      summary: Create order
+      description: Create a new order
+      tags:
+        - eCommerce
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Order'
+                  - type: object
+                    properties:
+                      order:
+                        $ref: '#/components/schemas/Order'
+                      payment_url:
+                        type: string
+                        description: MercadoPago payment URL
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/login:
+    post:
+      summary: User login
+      description: Authenticate user and return JWT token
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT token
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/me:
+    get:
+      summary: Get current user
+      description: Get current authenticated user information
+      tags:
+        - Authentication
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User information retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/crm/leads:
+    get:
+      summary: Get leads
+      description: Get leads for authenticated vendor
+      tags:
+        - CRM
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/LeadStatus'
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Leads retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  leads:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Lead'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+    post:
+      summary: Create lead
+      description: Create a new lead
+      tags:
+        - CRM
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLeadRequest'
+      responses:
+        '201':
+          description: Lead created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+
+  /api/crm/commissions:
+    get:
+      summary: Get vendor commissions
+      description: Get commission statistics for authenticated vendor
+      tags:
+        - CRM
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/TenantId'
+      responses:
+        '200':
+          description: Commissions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sales:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Sale'
+                  stats:
+                    $ref: '#/components/schemas/CommissionStats'
+
+  /webhooks/mercadopago:
+    post:
+      summary: MercadoPago webhook
+      description: Handle MercadoPago payment notifications
+      tags:
+        - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: payment
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "12345678901"
+      responses:
+        '200':
+          description: Webhook processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  received:
+                    type: boolean
+                    example: true
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    TenantId:
+      name: x-tenant-id
+      in: header
+      required: true
+      description: Tenant ID or slug
+      schema:
+        type: string
+        example: demo
+
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          example: cm123abc
+        tenantId:
+          type: string
+        name:
+          type: string
+          example: Auriculares Bluetooth
+        slug:
+          type: string
+          example: auriculares-bluetooth
+        description:
+          type: string
+          nullable: true
+        price:
+          type: number
+          format: decimal
+          example: 19999.00
+        salePrice:
+          type: number
+          format: decimal
+          nullable: true
+          example: 16999.00
+        cost:
+          type: number
+          format: decimal
+          nullable: true
+        sku:
+          type: string
+          nullable: true
+        barcode:
+          type: string
+          nullable: true
+        stock:
+          type: integer
+          example: 25
+        stockMin:
+          type: integer
+          example: 5
+        status:
+          $ref: '#/components/schemas/ProductStatus'
+        featured:
+          type: boolean
+          example: false
+        categoryId:
+          type: string
+        category:
+          $ref: '#/components/schemas/Category'
+        images:
+          type: array
+          items:
+            type: string
+          example: ["image1.jpg", "image2.jpg"]
+        attributes:
+          type: object
+          additionalProperties: true
+          example:
+            brand: TechCorp
+            color: Black
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        name:
+          type: string
+          example: Electrónica
+        slug:
+          type: string
+          example: electronica
+        description:
+          type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true
+        parentId:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        orderNumber:
+          type: string
+          example: "#12345"
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        phone:
+          type: string
+        subtotal:
+          type: number
+          format: decimal
+        shipping:
+          type: number
+          format: decimal
+        total:
+          type: number
+          format: decimal
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        paymentStatus:
+          $ref: '#/components/schemas/PaymentStatus'
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+        paymentId:
+          type: string
+          nullable: true
+        shippingAddress:
+          $ref: '#/components/schemas/Address'
+        shippingMethod:
+          type: string
+          enum: [standard, express]
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        createdAt:
+          type: string
+          format: date-time
+
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+        productId:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+          format: decimal
+        quantity:
+          type: integer
+        total:
+          type: number
+          format: decimal
+
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+          example: Av. Corrientes 1234
+        city:
+          type: string
+          example: Buenos Aires
+        state:
+          type: string
+          example: CABA
+        zip:
+          type: string
+          example: C1043
+        country:
+          type: string
+          example: AR
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        role:
+          $ref: '#/components/schemas/UserRole'
+        tenantId:
+          type: string
+          nullable: true
+        isVendor:
+          type: boolean
+        commissionRate:
+          type: number
+          format: float
+          nullable: true
+
+    Lead:
+      type: object
+      properties:
+        id:
+          type: string
+        vendorId:
+          type: string
+        businessName:
+          type: string
+        contactName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        address:
+          type: string
+        plan:
+          $ref: '#/components/schemas/Plan'
+        status:
+          $ref: '#/components/schemas/LeadStatus'
+        notes:
+          type: string
+          nullable: true
+        nextAction:
+          type: string
+          nullable: true
+        saleId:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+
+    Sale:
+      type: object
+      properties:
+        id:
+          type: string
+        vendorId:
+          type: string
+        plan:
+          $ref: '#/components/schemas/Plan'
+        amount:
+          type: number
+          format: decimal
+        commission:
+          type: number
+          format: decimal
+        commissionPaid:
+          type: boolean
+        tenantId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    CommissionStats:
+      type: object
+      properties:
+        totalSales:
+          type: integer
+        totalAmount:
+          type: number
+          format: decimal
+        totalCommission:
+          type: number
+          format: decimal
+        pendingCommission:
+          type: number
+          format: decimal
+        paidCommission:
+          type: number
+          format: decimal
+
+    CreateOrderRequest:
+      type: object
+      required:
+        - email
+        - name
+        - phone
+        - paymentMethod
+        - shippingAddress
+        - shippingMethod
+        - items
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        phone:
+          type: string
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+        shippingAddress:
+          $ref: '#/components/schemas/Address'
+        shippingMethod:
+          type: string
+          enum: [standard, express]
+        items:
+          type: array
+          items:
+            type: object
+            required:
+              - productId
+              - quantity
+            properties:
+              productId:
+                type: string
+              quantity:
+                type: integer
+                minimum: 1
+
+    CreateLeadRequest:
+      type: object
+      required:
+        - businessName
+        - contactName
+        - email
+        - plan
+      properties:
+        businessName:
+          type: string
+        contactName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        address:
+          type: string
+        plan:
+          $ref: '#/components/schemas/Plan'
+        notes:
+          type: string
+        nextAction:
+          type: string
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 20
+        total:
+          type: integer
+          example: 150
+        pages:
+          type: integer
+          example: 8
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Error message
+        code:
+          type: string
+          example: ERROR_CODE
+        timestamp:
+          type: string
+          format: date-time
+          example: "2024-09-13T10:30:00.000Z"
+        path:
+          type: string
+          example: "/api/products"
+        details:
+          type: object
+          additionalProperties: true
+
+    # Enums
+    ProductStatus:
+      type: string
+      enum:
+        - DRAFT
+        - ACTIVE
+        - INACTIVE
+        - ARCHIVED
+
+    OrderStatus:
+      type: string
+      enum:
+        - PENDING
+        - PROCESSING
+        - SHIPPED
+        - DELIVERED
+        - CANCELLED
+
+    PaymentStatus:
+      type: string
+      enum:
+        - PENDING
+        - PAID
+        - FAILED
+        - REFUNDED
+
+    PaymentMethod:
+      type: string
+      enum:
+        - CASH
+        - CARD
+        - TRANSFER
+        - MERCADOPAGO
+
+    UserRole:
+      type: string
+      enum:
+        - SUPER_ADMIN
+        - ADMIN
+        - MANAGER
+        - VENDOR
+        - SUPPORT
+
+    Plan:
+      type: string
+      enum:
+        - EMPRENDEDOR
+        - COMERCIO
+        - EMPRESA
+        - MARKETPLACE
+
+    LeadStatus:
+      type: string
+      enum:
+        - NEW
+        - CONTACTED
+        - QUALIFIED
+        - PROPOSAL
+        - WON
+        - LOST
+
+tags:
+  - name: System
+    description: System health and status endpoints
+  - name: eCommerce
+    description: Public eCommerce endpoints
+  - name: Authentication
+    description: User authentication
+  - name: CRM
+    description: Customer Relationship Management
+  - name: ERP
+    description: Enterprise Resource Planning
+  - name: Webhooks
+    description: External webhook handlers

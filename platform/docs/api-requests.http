@@ -1,0 +1,304 @@
+# ComercioYA Platform API - Request Collection
+# Use with REST Client extension in VS Code or import to Postman/Insomnia
+# Base URL: http://localhost:3000
+# Tenant Header: x-tenant-id: demo
+
+@baseUrl = http://localhost:3000
+@tenantId = demo
+
+### Health Check
+GET {{baseUrl}}/health
+
+### =============================================================================
+### ECOMMERCE API
+### =============================================================================
+
+### Get Products - Basic
+GET {{baseUrl}}/api/products
+x-tenant-id: {{tenantId}}
+
+### Get Products - With Pagination
+GET {{baseUrl}}/api/products?page=1&limit=10
+x-tenant-id: {{tenantId}}
+
+### Get Products - Search
+GET {{baseUrl}}/api/products?search=auriculares
+x-tenant-id: {{tenantId}}
+
+### Get Products - By Category
+GET {{baseUrl}}/api/products?category=electronica
+x-tenant-id: {{tenantId}}
+
+### Get Products - Featured Only
+GET {{baseUrl}}/api/products?featured=true
+x-tenant-id: {{tenantId}}
+
+### Get Single Product
+GET {{baseUrl}}/api/products/auriculares-bluetooth
+x-tenant-id: {{tenantId}}
+
+### Get Categories
+GET {{baseUrl}}/api/categories
+x-tenant-id: {{tenantId}}
+
+### Create Order - Cash Payment
+POST {{baseUrl}}/api/orders
+Content-Type: application/json
+x-tenant-id: {{tenantId}}
+
+{
+  "email": "cliente@example.com",
+  "name": "Juan Pérez",
+  "phone": "+54911234567",
+  "paymentMethod": "CASH",
+  "shippingMethod": "standard",
+  "shippingAddress": {
+    "street": "Av. Corrientes 1234",
+    "city": "Buenos Aires",
+    "state": "CABA",
+    "zip": "C1043",
+    "country": "AR"
+  },
+  "items": [
+    {
+      "productId": "product-id-here",
+      "quantity": 1
+    }
+  ]
+}
+
+### Create Order - MercadoPago Payment
+POST {{baseUrl}}/api/orders
+Content-Type: application/json
+x-tenant-id: {{tenantId}}
+
+{
+  "email": "cliente@example.com",
+  "name": "María González",
+  "phone": "+54911234567",
+  "paymentMethod": "MERCADOPAGO",
+  "shippingMethod": "express",
+  "shippingAddress": {
+    "street": "Av. Santa Fe 5678",
+    "city": "Buenos Aires",
+    "state": "CABA",
+    "zip": "C1025",
+    "country": "AR"
+  },
+  "items": [
+    {
+      "productId": "product-id-here",
+      "quantity": 2
+    }
+  ]
+}
+
+### =============================================================================
+### CRM API (Requires Authentication)
+### =============================================================================
+
+### Login (Get JWT Token)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@demo.local",
+  "password": "demo1234"
+}
+
+### Get Current User
+GET {{baseUrl}}/auth/me
+Authorization: Bearer your-jwt-token-here
+
+### Get Leads (Vendor Only)
+GET {{baseUrl}}/api/crm/leads
+Authorization: Bearer your-jwt-token-here
+x-tenant-id: {{tenantId}}
+
+### Create Lead
+POST {{baseUrl}}/api/crm/leads
+Content-Type: application/json
+Authorization: Bearer your-jwt-token-here
+x-tenant-id: {{tenantId}}
+
+{
+  "businessName": "Tech Store SA",
+  "contactName": "Roberto Tech",
+  "email": "roberto@techstore.com",
+  "phone": "+54911555666",
+  "address": "Av. Rivadavia 1000, CABA",
+  "plan": "COMERCIO",
+  "notes": "Interested in full ecommerce setup",
+  "nextAction": "Schedule demo call"
+}
+
+### Convert Lead to Sale
+POST {{baseUrl}}/api/crm/leads/lead-id-here/convert
+Content-Type: application/json
+Authorization: Bearer your-jwt-token-here
+x-tenant-id: {{tenantId}}
+
+{
+  "slug": "techstore",
+  "password": "hashedpassword123"
+}
+
+### Get Vendor Commissions
+GET {{baseUrl}}/api/crm/commissions
+Authorization: Bearer your-jwt-token-here
+x-tenant-id: {{tenantId}}
+
+### =============================================================================
+### ERP API (Requires Authentication)
+### =============================================================================
+
+### Get Inventory Movements
+GET {{baseUrl}}/api/erp/inventory/movements
+Authorization: Bearer your-jwt-token-here
+x-tenant-id: {{tenantId}}
+
+### Get Inventory Movements - Filtered
+GET {{baseUrl}}/api/erp/inventory/movements?type=SALE&from=2024-01-01&to=2024-12-31
+Authorization: Bearer your-jwt-token-here
+x-tenant-id: {{tenantId}}
+
+### Adjust Inventory
+POST {{baseUrl}}/api/erp/inventory/adjust
+Content-Type: application/json
+Authorization: Bearer your-jwt-token-here
+x-tenant-id: {{tenantId}}
+
+{
+  "productId": "product-id-here",
+  "quantity": 10,
+  "reason": "Stock adjustment after physical count"
+}
+
+### Get Sales Report
+GET {{baseUrl}}/api/erp/reports/sales
+Authorization: Bearer your-jwt-token-here
+x-tenant-id: {{tenantId}}
+
+### Get Sales Report - Filtered
+GET {{baseUrl}}/api/erp/reports/sales?from=2024-01-01&to=2024-12-31&groupBy=month
+Authorization: Bearer your-jwt-token-here
+x-tenant-id: {{tenantId}}
+
+### =============================================================================
+### WEBHOOKS
+### =============================================================================
+
+### MercadoPago Webhook (Simulated)
+POST {{baseUrl}}/webhooks/mercadopago
+Content-Type: application/json
+
+{
+  "type": "payment",
+  "data": {
+    "id": "12345678901"
+  }
+}
+
+### =============================================================================
+### ADMIN API (Future Implementation)
+### =============================================================================
+
+### Get All Tenants (Super Admin Only)
+# GET {{baseUrl}}/api/admin/tenants
+# Authorization: Bearer super-admin-jwt-token
+
+### Create Tenant (Super Admin Only)
+# POST {{baseUrl}}/api/admin/tenants
+# Content-Type: application/json
+# Authorization: Bearer super-admin-jwt-token
+#
+# {
+#   "name": "New Store",
+#   "slug": "newstore",
+#   "plan": "EMPRENDEDOR",
+#   "adminEmail": "admin@newstore.com",
+#   "adminPassword": "secure123"
+# }
+
+### Update Tenant Status
+# PATCH {{baseUrl}}/api/admin/tenants/tenant-id/status
+# Content-Type: application/json
+# Authorization: Bearer super-admin-jwt-token
+#
+# {
+#   "status": "SUSPENDED"
+# }
+
+### =============================================================================
+### PRODUCT MANAGEMENT (Future Implementation)
+### =============================================================================
+
+### Create Product
+# POST {{baseUrl}}/api/products
+# Content-Type: application/json
+# Authorization: Bearer admin-jwt-token
+# x-tenant-id: {{tenantId}}
+#
+# {
+#   "name": "New Product",
+#   "slug": "new-product",
+#   "description": "Amazing new product description",
+#   "price": 99.99,
+#   "stock": 50,
+#   "categoryId": "category-id-here",
+#   "images": ["image1.jpg", "image2.jpg"],
+#   "attributes": {
+#     "color": "blue",
+#     "size": "medium"
+#   }
+# }
+
+### Update Product
+# PUT {{baseUrl}}/api/products/product-slug
+# Content-Type: application/json
+# Authorization: Bearer admin-jwt-token
+# x-tenant-id: {{tenantId}}
+#
+# {
+#   "price": 89.99,
+#   "stock": 45,
+#   "salePrice": 79.99
+# }
+
+### Delete Product
+# DELETE {{baseUrl}}/api/products/product-slug
+# Authorization: Bearer admin-jwt-token
+# x-tenant-id: {{tenantId}}
+
+### =============================================================================
+### CATEGORY MANAGEMENT (Future Implementation)
+### =============================================================================
+
+### Create Category
+# POST {{baseUrl}}/api/categories
+# Content-Type: application/json
+# Authorization: Bearer admin-jwt-token
+# x-tenant-id: {{tenantId}}
+#
+# {
+#   "name": "New Category",
+#   "slug": "new-category",
+#   "description": "Category description",
+#   "parentId": "parent-category-id-optional"
+# }
+
+### Update Category
+# PUT {{baseUrl}}/api/categories/category-slug
+# Content-Type: application/json
+# Authorization: Bearer admin-jwt-token
+# x-tenant-id: {{tenantId}}
+#
+# {
+#   "name": "Updated Category Name",
+#   "description": "Updated description"
+# }
+
+### Delete Category
+# DELETE {{baseUrl}}/api/categories/category-slug
+# Authorization: Bearer admin-jwt-token
+# x-tenant-id: {{tenantId}}
